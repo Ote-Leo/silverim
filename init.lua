@@ -397,6 +397,10 @@ require("lazy").setup({
 			{ "folke/neodev.nvim", opts = {} },
 		},
 		config = function()
+			local lspconfig = require("lspconfig")
+			lspconfig.util.default_config = vim.tbl_extend("force", lspconfig.util.default_config, {
+				autostart = false,
+			})
 
 			--  This function gets run when an LSP attaches to a particular buffer.
 			--    That is to say, every time a new file is opened that is associated with
@@ -465,14 +469,15 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				pyright = {},
-				rust_analyzer = {
-					autostart = false,
+				pyright = {
+					autostart = true,
+					settings = {
+						["python.pythonPath"] = "python3",
+					},
 				},
+				},
+				rust_analyzer = {},
 				lua_ls = {
-					-- cmd = {...},
-					-- filetypes = { ...},
-					-- capabilities = {},
 					settings = {
 						Lua = {
 							completion = {
