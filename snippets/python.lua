@@ -4,6 +4,7 @@ local sn = ls.snippet_node
 local t = ls.text_node
 local i = ls.insert_node
 local c = ls.choice_node
+local d = ls.dynamic_node
 
 local else_nodes = { { t({ "else:", "\t" }), i(1, "...") } }
 
@@ -60,6 +61,13 @@ local import_statement = s("import", {
 
 local yield_statement = s("yield", { t("yield "), i(1) })
 
+local function not_implemented_error(args)
+	local function_name = args[1][1]
+	return sn(nil, {
+		i(1, 'raise NotImplementedError("todo implement ' .. function_name .. '")'),
+	})
+end
+
 local function_definition_snippet = s({ trig = "def", docstring = "def …(…)…: …" }, {
 	t("def "),
 	i(1, "func"),
@@ -71,7 +79,7 @@ local function_definition_snippet = s({ trig = "def", docstring = "def …(…)�
 		sn(nil, { t(" -> "), i(1) }),
 	}),
 	t({ ":", "\t" }),
-	i(4, "..."),
+	d(4, not_implemented_error, { 1 }),
 })
 
 local entry_point = s({ trig = "main", docstring = 'if __name__ == "__main__": …' }, {
