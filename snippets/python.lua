@@ -121,6 +121,55 @@ local sorround_by_try = s({ trig = ":try", docstring = "try …: … except …:
 	i(3, "..."),
 })
 
+local sorround_by_def = s({ trig = ":def", docstring = "def …(…)…: …" }, {
+	t("def "),
+	i(1, "func"),
+	t("("),
+	i(2),
+	t(")"),
+	c(3, {
+		sn(nil, { t(" -> "), i(1) }),
+		t(""),
+	}),
+	t({ ":", "" }),
+	d(4, registered_text),
+	t({ "", "" }),
+})
+
+local sorround_by_with = s({ trig = ":with", docstring = "with …: …" }, {
+	t("with "),
+	as_renaming(1),
+	t({ ":", "" }),
+	d(2, registered_text),
+	t({ "", "" }),
+})
+
+local sorround_by_if = s({ trig = ":if", docstring = "if …: …" }, {
+	t("if "),
+	i(1),
+	t({ ":", "" }),
+	d(2, registered_text),
+	t({ "", "" }),
+})
+
+local sorround_by_for = s({ trig = ":for", docstring = "for … in …: …" }, {
+	t("for "),
+	i(1),
+	t(" in "),
+	i(2),
+	t({ ":", "" }),
+	d(3, registered_text),
+	t({ "", "" }),
+})
+
+local sorround_by_while = s({ trig = ":while", docstring = "while …: …" }, {
+	t("while "),
+	i(1),
+	t({ ":", "" }),
+	d(2, registered_text),
+	t({ "", "" }),
+})
+
 return {
 	function_definition_snippet,
 	for_loops,
@@ -138,4 +187,9 @@ return {
 	class_declaration,
 
 	sorround_by_try,
+	sorround_by_def,
+	sorround_by_with,
+	sorround_by_if,
+	sorround_by_for,
+	sorround_by_while,
 }
