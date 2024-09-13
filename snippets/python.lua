@@ -17,6 +17,20 @@ local function as_renaming(idx)
 	})
 end
 
+---Get text from clipboard, trimmed (trimming empty lines) and indented
+local function registered_text()
+	local text = vim.fn.trim(vim.fn.getreg() .. "", "\n")
+	local lines = vim.split(text, "\n")
+
+	for idx, line in ipairs(lines) do
+		if #vim.trim(line) > 0 then
+			lines[idx] = "\t" .. line
+		end
+	end
+
+	return sn(nil, t(lines))
+end
+
 local for_loops = s({ trig = "for", docstring = "for … in …: … else: …" }, {
 	t("for "),
 	i(1),
@@ -98,6 +112,15 @@ local class_declaration = s({ trig = "class", docstring = "class …: …" }, {
 	i(2, "..."),
 })
 
+local sorround_by_try = s({ trig = ":try", docstring = "try …: … except …: …" }, {
+	t({ "try:", "" }),
+	d(1, registered_text),
+	t({ "", "except " }),
+	as_renaming(2),
+	t({ ":", "\t" }),
+	i(3, "..."),
+})
+
 return {
 	function_definition_snippet,
 	for_loops,
@@ -113,4 +136,6 @@ return {
 
 	entry_point,
 	class_declaration,
+
+	sorround_by_try,
 }
