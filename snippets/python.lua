@@ -8,6 +8,15 @@ local d = ls.dynamic_node
 
 local else_nodes = { { t({ "else:", "\t" }), i(1, "...") } }
 
+---@param idx integer
+---@return ChoiceNode
+local function as_renaming(idx)
+	return c(idx, {
+		sn(nil, { i(1), t(" as "), i(2) }),
+		i(3),
+	})
+end
+
 local for_loops = s({ trig = "for", docstring = "for … in …: … else: …" }, {
 	t("for "),
 	i(1),
@@ -23,13 +32,9 @@ local for_loops = s({ trig = "for", docstring = "for … in …: … else: …" 
 
 local with_statement = s("with", {
 	t("with "),
-	i(1),
-	c(2, {
-		t(""),
-		sn(nil, { t(" as "), i(1) }),
-	}),
+	as_renaming(1),
 	t({ ":", "\t" }),
-	i(3, "..."),
+	i(2, "..."),
 })
 
 ---Any of the form "<token> …: …"
@@ -55,8 +60,7 @@ local else_statement = s("else", else_nodes) -- BUG: check if preceeded by an ``
 local import_statement = s("import", {
 	c(1, { sn(nil, { t("from "), i(1), t(" ") }), t("") }),
 	t("import "),
-	i(2),
-	c(3, { sn(nil, { t(" as "), i(1) }), t("") }),
+	as_renaming(2),
 })
 
 local yield_statement = s("yield", { t("yield "), i(1) })
