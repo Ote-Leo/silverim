@@ -87,6 +87,13 @@ local entry_point = s({ trig = "main", docstring = 'if __name__ == "__main__": �
 	i(1, "..."),
 })
 
+local class_declaration = s({ trig = "class", docstring = "class …: …" }, {
+	t("class "),
+	i(1),
+	t({ ":", "\t" }),
+	i(2, "..."),
+})
+
 return {
 	function_definition_snippet,
 	for_loops,
@@ -101,4 +108,5 @@ return {
 	yield_statement,
 
 	entry_point,
+	class_declaration,
 }
