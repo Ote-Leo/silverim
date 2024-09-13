@@ -93,8 +93,8 @@ local function_definition_snippet = s({ trig = "def", docstring = "def …(…)�
 	i(2),
 	t(")"),
 	c(3, {
-		t(""),
 		sn(nil, { t(" -> "), i(1) }),
+		t(""),
 	}),
 	t({ ":", "\t" }),
 	d(4, not_implemented_error, { 1 }),
