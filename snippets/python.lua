@@ -6,7 +6,7 @@ local i = ls.insert_node
 local c = ls.choice_node
 local d = ls.dynamic_node
 
-local else_nodes = { { t({ "else:", "\t" }), i(1, "...") } }
+local else_nodes = { t({ "else:", "\t" }), i(1, "...") }
 
 ---@param idx integer
 ---@return ChoiceNode
@@ -38,10 +38,11 @@ local for_loops = s({ trig = "for", docstring = "for … in …: … else: …" 
 	i(2),
 	t({ ":", "\t" }),
 	i(3, "..."),
-	c(4, {
-		t(""),
-		sn(nil, else_nodes),
-	}),
+	t({ "", "" }),
+	-- c(4, {
+	-- 	t(""),
+	-- 	sn(nil, vim.deepcopy(else_nodes)),
+	-- }),
 })
 
 local with_statement = s("with", {
@@ -69,7 +70,7 @@ local while_loops = single_placer("while")
 
 local if_condition = single_placer("if")
 local elif_condition = single_placer("elif") -- BUG: check if preceeded by an ``if`` statement
-local else_statement = s("else", else_nodes) -- BUG: check if preceeded by an ``if`` statement or a ``for-loop``
+local else_statement = s("else", vim.deepcopy(else_nodes)) -- BUG: check if preceeded by an ``if`` statement or a ``for-loop``
 
 local import_statement = s("import", {
 	c(1, { sn(nil, { t("from "), i(1), t(" ") }), t("") }),
