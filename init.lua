@@ -347,6 +347,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader>st", builtin.tags, { desc = "[S]earch [T]ags" })
+			vim.keymap.set("n", "<leader>sT", builtin.current_buffer_tags, { desc = "[S]earch current buffer [T]ags" })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
 			-- Telescope/Git kepmaps
